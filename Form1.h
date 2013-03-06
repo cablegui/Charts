@@ -103,12 +103,12 @@ namespace Charts {
 				array<String ^> ^myString = gcnew array<String ^> {"Series1","Series2"};
 				 
 				chart1->Series->Add(myString[0]);
-				chart1->Series[myString[0]]->IsValueShownAsLabel = True;
+				chart1->Series[myString[0]]->IsValueShownAsLabel = true;
  				chart1->Series[myString[0]]->ChartType = SeriesChartType::Line;
 				//chart1->Series[myString[0]]->Label = "Y=#VALY\nX=#VALX";
  				chart1->Series[myString[0]]->Points->AddXY(1,100);
-				chart1->Series[myString[0]]->Point[0]->AxisLabel = "MyAxisLabel";
-				chart1->Series[myString[0]]->Point[0]->Label = "MyPointLabel";
+				chart1->Series[myString[0]]->Points[0]->AxisLabel = "MyAxisLabel";
+				chart1->Series[myString[0]]->Points[0]->Label = "MyPointLabel";
 				chart1->Series[myString[0]]->Points->AddXY(1,100);
 				chart1->Series[myString[0]]->Points->AddXY(2,200);
 				
