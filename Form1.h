@@ -125,14 +125,14 @@ namespace Charts {
 				chart1->Series[myString[0]]->Points->AddXY(0,100);
 				wchar_t orig = 0x2080; // for subscript
 				chart1->Series[myString[0]]->Points[0]->Label = String::Concat("""","S",orig," =",100,"\n","C",orig, " = ",91.5,"""");
-				chart1->Series[myString[0]]->Points->AddXY(2,200);
+				chart1->Series[myString[0]]->Points->AddXY(1,150);
 				
 				//Problem? How do I place labels at every data point?
 
 				chart1->Series->Add(myString[1]);
 				chart1->Series[myString[1]]->ChartType = SeriesChartType::Line;
-				chart1->Series[myString[1]]->Points->AddXY(1,100);
-				chart1->Series[myString[1]]->Points->AddXY(2,50);
+				chart1->Series[myString[1]]->Points->AddXY(0,100);
+				chart1->Series[myString[1]]->Points->AddXY(1,50);
 			 }
 	};
 }
