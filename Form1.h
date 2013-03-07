@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+//#include <locale>
 
 namespace Charts {
 
@@ -64,9 +65,10 @@ namespace Charts {
 			// 
 			// chart1
 			// 
-			chartArea1->Name = L"ChartArea1";
+			chartArea1->CursorX->LineColor = System::Drawing::Color::Lime;
+			chartArea1->Name = L"Branch1";
 			this->chart1->ChartAreas->Add(chartArea1);
-			legend1->Name = L"Legend1";
+			legend1->Name = L"Branch1";
 			this->chart1->Legends->Add(legend1);
 			this->chart1->Location = System::Drawing::Point(12, 49);
 			this->chart1->Name = L"chart1";
@@ -101,15 +103,28 @@ namespace Charts {
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) 
 			 {
 				array<String ^> ^myString = gcnew array<String ^> {"Series1","Series2"};
-				 
+				//setlocale(LC_CTYPE,""); 
 				chart1->Series->Add(myString[0]);
-				chart1->Series[myString[0]]->IsValueShownAsLabel = true;
+				//chart1->BackColor = Color::Blue;
+
+				//chart1->Series[myString[0]]->ChartArea = "Branch1";
+				//chart1->ChartAreas["Branch1"]->AxisX->MinorGrid->Enabled = true;
+				chart1->ChartAreas["Branch1"]->AxisX->MajorGrid->LineColor = Color::White;
+				chart1->ChartAreas["Branch1"]->AxisY->MajorGrid->LineColor = Color::White;
+				chart1->Legends["Branch1"]->Enabled = false;
+				chart1->ChartAreas["Branch1"]->AxisX->Title = "Time";
+				chart1->ChartAreas["Branch1"]->AxisX->IsStartedFromZero = true;
+				//chart1->ChartAreas["Branch1"]->Area3DStyle->Enable3D = true;
+				chart1->ChartAreas["Branch1"]->AxisY->LineColor = Color::White;
+				chart1->ChartAreas["Branch1"]->AxisY->LabelStyle->ForeColor = Color::White;
+				//chart1->Series[myString[0]]->IsValueShownAsLabel = true;
  				chart1->Series[myString[0]]->ChartType = SeriesChartType::Line;
 				//chart1->Series[myString[0]]->Label = "Y=#VALY\nX=#VALX";
- 				chart1->Series[myString[0]]->Points->AddXY(1,100);
-				chart1->Series[myString[0]]->Points[0]->AxisLabel = "MyAxisLabel";
-				chart1->Series[myString[0]]->Points[0]->Label = "MyPointLabel";
-				chart1->Series[myString[0]]->Points->AddXY(1,100);
+ 				//chart1->Series[myString[0]]->Points->AddXY(1,100);
+				//chart1->Series[myString[0]]->Points[0]->AxisLabel = "MyAxisLabel";
+				chart1->Series[myString[0]]->Points->AddXY(0,100);
+				wchar_t orig = 0x2080; // for subscript
+				chart1->Series[myString[0]]->Points[0]->Label = String::Concat("""","S",orig," =",100,"\n","C",orig, " = ",91.5,"""");
 				chart1->Series[myString[0]]->Points->AddXY(2,200);
 				
 				//Problem? How do I place labels at every data point?
