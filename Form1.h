@@ -1,5 +1,10 @@
 #pragma once
 #include <string>
+#include <vector>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+
 //#include <locale>
 
 namespace Charts {
@@ -7,6 +12,7 @@ namespace Charts {
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
+	using namespace System::Collections::Generic;
 	using namespace System::Windows::Forms;
 	using namespace System::Windows::Forms::DataVisualization::Charting;
 	using namespace System::Data;
@@ -107,13 +113,29 @@ namespace Charts {
 
 		}
 #pragma endregion
+
+template <class V> 
+V getTreeData(vector<double> &mat, int point)
+{
+	vector<vector<V>>::const_iterator i;
+	vector<V>::const_iterator j;
+	
+	for (i = mat.begin(); i < mat.end(); i++)
+	{
+		for (j = *i.begin(); i < *.end(); j++)
+			if (j == point)
+				return *j;
+	}
+
+	
+}
+
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) 
 			 {
-				array<String ^> ^myString = gcnew array<String ^> {"Series1","Series2","Series3","Series4"};
-				//setlocale(LC_CTYPE,""); 
-				chart1->Series->Add(myString[0]);
-				//chart1->BackColor = Color::Blue;
-
+				//array<String ^> ^myString = gcnew array<String ^> {"Series1","Series2","Series3","Series4"};
+				
+				List<String ^> ^myString = gcnew List<String ^>();
+				
 				//chart1->Series[myString[0]]->ChartArea = "Branch1";
 				//chart1->ChartAreas["Branch1"]->AxisX->MinorGrid->Enabled = true;
 				chart1->ChartAreas["Branch1"]->AxisX->MajorGrid->LineColor = Color::White;
@@ -126,10 +148,56 @@ namespace Charts {
 				chart1->ChartAreas["Branch1"]->AxisY->LineColor = Color::White;
 				chart1->ChartAreas["Branch1"]->AxisY->LabelStyle->ForeColor = Color::White;
 				//chart1->Series[myString[0]]->IsValueShownAsLabel = true;
- 				chart1->Series[myString[0]]->ChartType = SeriesChartType::Line;
-				//chart1->Series[myString[0]]->Label = "Y=#VALY\nX=#VALX";
+ 				//chart1->Series[myString[0]]->Label = "Y=#VALY\nX=#VALX";
  				//chart1->Series[myString[0]]->Points->AddXY(1,100);
 				//chart1->Series[myString[0]]->Points[0]->AxisLabel = "MyAxisLabel";
+				for (int i = 1; i <= 200; i++)
+				{
+					myString->Add(String::Concat("Series",i));
+					chart1->Series->Add(myString[i-1]);
+					chart1->Series[myString[i-1]]->ChartType = SeriesChartType::Line;
+				}
+				
+				
+				
+				double stockPrice = 100;
+				double N = 10;
+				double T = 0.25;
+				double vola = 0.234;
+				
+				double up = exp(vola*sqrt(T/N));
+
+				double down = 1/up;
+						
+				vector<vector<double>> bTreeMatrix;
+
+				bTreeMatrix[0].push_back(stockPrice);
+
+				for (int i = 1; i < N; i++)
+				{
+					for (unsigned int j = 0; j < bTreeMatrix[0].size(); j++)
+						{
+							bTreeMatrix[i].push_back(up * getTreeData(bTreeMatrix[i-1],j));
+							bTreeMatrix[i].push_back(down * getTreeData(bTreeMatrix[i-1],j));							
+						}
+				}
+
+				/*string myConcatString;
+				char myIntToString[3];
+				vector<string> myString;
+
+				for (int i = 0; i < 10; i++)
+				{
+					_itoa_s(i,myIntToString,10);
+					myConcatString = strcat_s(myIntToString,sizeof(myIntToString),"Series");
+					myString.push_back(myConcatString);
+				}*/
+				
+				//setlocale(LC_CTYPE,""); 
+				//chart1->Series->Add(myString[0]);
+				//chart1->BackColor = Color::Blue;
+
+				
 				chart1->Series[myString[0]]->Points->AddXY(0,100);
 				wchar_t orig = 0x2080; // for subscript
 				chart1->Series[myString[0]]->Points[0]->Label = String::Concat("""","S",orig," =",100,"\n","C",orig, " = ",91.5,"""");
@@ -138,14 +206,14 @@ namespace Charts {
 				chart1->Series[myString[0]]->Points[1]->Label = String::Concat("""","S",orig," =",150,"\n","C",orig, " = ",102,"""");
 				//Problem? How do I place labels at every data point?
 
-				chart1->Series->Add(myString[1]);
+				//chart1->Series->Add(myString[1]);
 				chart1->Series[myString[1]]->ChartType = SeriesChartType::Line;
 				chart1->Series[myString[1]]->Points->AddXY(0,100);
 				
 				chart1->Series[myString[1]]->Points->AddXY(1,50);
 				chart1->Series[myString[1]]->Points[1]->Label = String::Concat("""","S",orig," =",50,"\n","C",orig, " = ",90,"""");
-				chart1->Series->Add(myString[2]);
-				chart1->Series->Add(myString[3]);
+				//chart1->Series->Add(myString[2]);
+				//chart1->Series->Add(myString[3]);
 				chart1->Series[myString[2]]->ChartType = SeriesChartType::Line;
 				chart1->Series[myString[3]]->ChartType = SeriesChartType::Line;
 				chart1->Series[myString[2]]->Points->AddXY(1,150);
@@ -159,3 +227,5 @@ namespace Charts {
 	};
 }
 
+
+	
